@@ -9,12 +9,6 @@ omhttp: HTTP Output Module
 Original Author:             `Christian Tramnitz <https://github.com/ctramnitz/>`_
 ===========================  ===========================================================================
 
-.. warning::
-
-   This page is incomplete, if you want to contribute you can do this on
-   github in the `rsyslog-doc repository <https://github.com/rsyslog/rsyslog-doc>`_.
-
-
 
 Purpose
 =======
@@ -35,7 +29,7 @@ Notable Features
 - `Message Batching`_, supports several formats.
     - Newline concatenation, like the Elasticsearch bulk format.
     - JSON Array as a generic batching strategy.
-    - Kafka REST Proxy format, to support sending data through the `Confluent Kafka REST API <https://docs.confluent.io/current/kafka-rest/docs/index.html>`_ to a Kafka cluster.
+    - Kafka REST Proxy format, to support sending data through the `Confluent Kafka REST API <https://docs.confluent.io/platform/current/kafka-rest/index.html>`_ to a Kafka cluster.
 
 Configuration Parameters
 ========================
@@ -326,21 +320,21 @@ Each message on the "Inputs" line is the templated log line that is fed into the
     Inputs: "message 1" "message 2" "message 3"
     Output: "message 1\nmessage2\nmessage3"
 
-2. *jsonarray* - Builds a JSON array containing all messages in the batch. This mode requires that each message is parseable JSON, since the plugin parses each message as JSON while building the array.
+2. *jsonarray* - Builds a JSON array containing all messages in the batch. This mode requires that each message is parsable JSON, since the plugin parses each message as JSON while building the array.
 
 .. code-block:: text
 
     Inputs: {"msg": "message 1"} {"msg"": "message 2"} {"msg": "message 3"}
     Output: [{"msg": "message 1"}, {"msg"": "message 2"}, {"msg": "message 3"}]
 
-3. *kafkarest* - Builds a JSON object that conforms to the `Kafka Rest Proxy specification <https://docs.confluent.io/current/kafka-rest/docs/quickstart.html>`_. This mode requires that each message is parseable JSON, since the plugin parses each message as JSON while building the batch object.
+3. *kafkarest* - Builds a JSON object that conforms to the `Kafka Rest Proxy specification <https://docs.confluent.io/platform/current/kafka-rest/quickstart.html>`_. This mode requires that each message is parsable JSON, since the plugin parses each message as JSON while building the batch object.
 
 .. code-block:: text
 
     Inputs: {"msg": "message 1"} {"msg"": "message 2"} {"msg": "message 3"}
     Output: {"records": [{"value": {"msg": "message 1"}}, {"value": {"msg": "message 2"}}, {"value": {"msg": "message 3"}}]}
 
-4. *lokirest* - Builds a JSON object that conforms to the `Loki Rest specification <https://github.com/grafana/loki/blob/master/docs/api.md#post-lokiapiv1push>`_. This mode requires that each message is parseable JSON, since the plugin parses each message as JSON while building the batch object. Additionally, the operator is responsible for providing index keys, and message values.
+4. *lokirest* - Builds a JSON object that conforms to the `Loki Rest specification <https://github.com/grafana/loki/blob/main/docs/sources/reference/loki-http-api.md#ingest-logs>`_. This mode requires that each message is parsable JSON, since the plugin parses each message as JSON while building the batch object. Additionally, the operator is responsible for providing index keys, and message values.
 
 .. code-block:: text
 
@@ -489,7 +483,7 @@ Here you can set the name of a file where all errors will be written to. Any req
 
     {
         "request": {
-            "url": "https://url.com:443/path",
+            "url": "https://example.com:443/path",
             "postdata": "mypayload"
         },
         "response" : {
@@ -538,7 +532,7 @@ useHttps
 
    "binary", "off", "no", "none"
 
-When switched to "on" you will use https instead of http.
+When switched to "on" you will use `https` instead of `http`.
 
 
 tls.cacert
@@ -618,8 +612,6 @@ reloadonhup
 If this parameter is "on", the plugin will close and reopen any libcurl handles on a HUP signal. This option is primarily intended to enable reloading short-lived certificates without restarting rsyslog.
 
 
-.. _statsname_label:
-
 statsname
 ^^^^^^^^^
 
@@ -633,11 +625,8 @@ statsname
 
 The name assigned to statistics specific to this action instance. The supported set of
 statistics tracked for this action instance are **submitted**, **acked**, **failures**.
-See the :ref:`_statistic_counter_label` section for more details.
+See the `Statistic Counter`_ section for more details.
 
-
-
-.. _statistic_counter_label:
 
 Statistic Counter
 =================
@@ -664,7 +653,7 @@ accumulates all action instances. The statistic origin is named "omhttp" with fo
 - **request.status.fail** - Number of requests returning 3XX, 4XX, or 5XX HTTP status codes. If a requests fails (i.e. server not reachable) this counter will *not* be incremented.
 
 
-Additionally, the following statistics can also be configured for a specific action instances. See :ref:`_statsname_label` for more details.
+Additionally, the following statistics can also be configured for a specific action instances. See `statsname`_ for more details.
 
 - **requests.count** - Number of requests 
 
@@ -702,7 +691,7 @@ Here's the pseudocode of the batching algorithm used by omhttp. This section of 
 
     def submit(Q):                      # function to submit
         batch = serialize(Q)            # serialize according to configured batch.format
-        result = post(batch)            # http post serialized batch to server
+        result = post(batch)            # HTTP post serialized batch to server
         checkFailureAndRetry(Q, result) # check if post failed and pushed failed messages to configured retry.ruleset
         Q.empty()                       # reset for next batch
 

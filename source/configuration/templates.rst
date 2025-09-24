@@ -30,7 +30,7 @@ Template processing
 ===================
 
 Due to lack of standardization regarding logs formats, when a template is
-specified it's supposed to include HEADER, as defined in `RFC5424 <https://tools.ietf.org/html/rfc5424>`_
+specified it's supposed to include HEADER, as defined in `RFC5424 <https://datatracker.ietf.org/doc/html/rfc5424>`_
 
 It's very important to have this in mind, and also to understand how
 `rsyslog parsing <http://www.rsyslog.com/doc/syslog_parsing.html>`_ works.
@@ -205,7 +205,7 @@ property or modifying it. It supports the following parameters:
    that inside string templates, the option must include what it applies
    to whereas with the explicit format that is part of the parameter name.
 
-   To create a customised format you can use multiple property options
+   To create a customized format you can use multiple property options
    together. The following example would result in **YYYY-MM-DD**:
 
 .. code-block:: none
@@ -437,14 +437,14 @@ the latter ones are processed by the property replacer and apply to a
 SINGLE property, only (and not the whole template).
 Template options are case-insensitive. Currently defined are:
 
-**option.sql** - format the string suitable for a SQL statement in MySQL
-format. This will replace single quotes ("'") and the backslash
+**option.sql** - format the string suitable for an SQL statement in MariaDB/
+MySQL format. This will replace single quotes ("'") and the backslash
 character by their backslash-escaped counterpart ("\\'" and "\\\\")
 inside each field. Please note that in MySQL configuration, the
 ``NO_BACKSLASH_ESCAPES`` mode must be turned off for this format to work
 (this is the default).
 
-**option.stdsql** - format the string suitable for a SQL statement that
+**option.stdsql** - format the string suitable for an SQL statement that
 is to be sent to a standards-compliant sql server. This will replace
 single quotes ("'") by two single quotes ("''") inside each field. You
 must use stdsql together with MySQL if in MySQL configuration the
@@ -489,10 +489,10 @@ toll on the processing time. Not much, but on a really busy system you
 might notice it.
 
 The default template for the write to database action has the sql option
-set. As we currently support only MySQL and the sql option matches the
-default MySQL configuration, this is a good choice. However, if you have
-turned on ``NO_BACKSLASH_ESCAPES`` in your MySQL config, you need to
-supply a template with the stdsql option. Otherwise you will become
+set. As we currently support only MariaDB/MySQL and the sql option matches 
+the default MariaDB/MySQL configuration, this is a good choice. However, 
+if you  have turned on ``NO_BACKSLASH_ESCAPES`` in your MySQL config, you 
+need to supply a template with the stdsql option. Otherwise you will become
 vulnerable to SQL injection.
 
 .. code-block:: none
@@ -565,8 +565,8 @@ The equivalent string template looks like this:
    The template string itself must be on a single line.
 
 
-Standard Template for writing to the MySQL database
----------------------------------------------------
+Standard Template for writing to the MariaDB/MySQL database
+-----------------------------------------------------------
 
 .. code-block:: none
 
@@ -734,7 +734,7 @@ messages to rsyslog 3.12.5 or above.
 
 **RSYSLOG_SyslogProtocol23Format** - the format specified in IETF's
 internet-draft ietf-syslog-protocol-23, which is very close to the actual
-syslog standard `RFC5424 <https://tools.ietf.org/html/rfc5424>`_ (we couldn't
+syslog standard `RFC5424 <https://datatracker.ietf.org/doc/html/rfc5424>`_ (we couldn't
 update this template as things were in production for quite some time when
 RFC5424 was finally approved). This format includes several improvements.
 You may use this format with all relatively recent versions of rsyslog or syslogd.
@@ -806,7 +806,7 @@ message was generated and at the end the syslogtag and message itself.
         string=" %syslogtag%%msg%\n\r")
 
 **RSYSLOG_StdDBFmt** - Generates a insert command with the message
-properties, into table SystemEvents for a mysql database.
+properties, into table SystemEvents for a MariaDB/MySQL database.
 
 .. code-block:: none
 

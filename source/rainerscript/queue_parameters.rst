@@ -259,7 +259,7 @@ queue.discardMark
    :widths: auto
    :class: parameter-table
 
-   "integer", "80% of queue.size", "no", "``$ActionQueueDiscardMark``"
+   "integer", "98% of queue.size", "no", "``$ActionQueueDiscardMark``"
 
 Specifies the threshold at which rsyslog begins to discard less important
 messages. To define which messages should be discarded use the
@@ -469,7 +469,7 @@ In some other words, you can consider this scenario, using default values.
 With all progress blocked (unable to deliver a message):
 
 * all delayable inputs (tcp, relp, imfile, imjournal, etc) will block
-  indefinantly (assuming queue.lightdelaymark and queue.fulldelaymark
+  indefinitely (assuming queue.lightdelaymark and queue.fulldelaymark
   are set sensible, which they are by default).
 * imudp will be loosing messages because the OS will be dropping them
 * messages arriving via UDP or imuxsock that do make it to rsyslog,

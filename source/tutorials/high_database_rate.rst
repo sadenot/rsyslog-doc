@@ -1,7 +1,7 @@
 Handling a massive syslog database insert rate with Rsyslog
 ===========================================================
 
-*Written by* `Rainer Gerhards <http://www.gerhards.net/rainer>`_
+*Written by* `Rainer Gerhards <https://rainer.gerhards.net/>`_
 *(2008-01-31)*
 
 Abstract
@@ -19,8 +19,8 @@ Database updates are inherently slow when it comes to storing syslog
 messages. However, there are a number of applications where it is handy
 to have the message inside a database. Rsyslog supports native database
 writing via output plugins. As of this writing, there are plugins
-available for MySQL an PostgreSQL. Maybe additional plugins have become
-available by the time you read this. Be sure to check.
+available for MariaDB/MySQL and PostgreSQL. Maybe additional plugins have 
+become available by the time you read this. Be sure to check.
 
 In order to successfully write messages to a database backend, the
 backend must be capable to record messages at the expected average
@@ -64,7 +64,7 @@ transparently by rsyslog.
 With our above scenario, the disk buffer would build up during the day
 and rsyslog would use the night to drain it. Obviously, this is an
 extreme example, but it shows what can be done. Please note that queue
-content survies rsyslogd restarts, so even a reboot of the system will
+content survives rsyslogd restarts, so even a reboot of the system will
 not cause any message loss.
 
 How To Setup
@@ -73,7 +73,7 @@ How To Setup
 Frankly, it's quite easy. You just need to do is instruct rsyslog to use
 a disk queue and then configure your action. There is nothing else to
 do. With the following simple config file, you log anything you receive
-to a MySQL database and have buffering applied automatically.
+to a MariaDB/MySQL database and have buffering applied automatically.
 
 ::
 
@@ -83,7 +83,7 @@ to a MySQL database and have buffering applied automatically.
     module(load="imudp")
     input(type="imudp" port="514")
     
-    # Make sure this path exists and the user of the deamon has read/write/execute access
+    # Make sure this path exists and the user of the daemon has read/write/execute access
     global(WorkDirectory="/var/spool/rsyslog") # default location for work (spool) files
     main_queue(queue.fileName="mainq")
 
@@ -119,7 +119,7 @@ more commands:
     module(load="imudp")
     input(type="imudp" port="514")
     
-    # Make sure this path exists and the user of the deamon has read/write/execute access
+    # Make sure this path exists and the user of the daemon has read/write/execute access
     global(WorkDirectory="/var/spool/rsyslog") # default location for work (spool) files
     
     module (load="ommysql")

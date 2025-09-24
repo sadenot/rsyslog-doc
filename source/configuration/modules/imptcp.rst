@@ -12,7 +12,7 @@ Purpose
 =======
 
 Provides the ability to receive syslog messages via plain TCP syslog.
-This is a specialised input plugin tailored for high performance on
+This is a specialized input plugin tailored for high performance on
 Linux. It will probably not run on any other platform. Also, it does not
 provide TLS services. Encryption can be provided by using
 `stunnel <rsyslog_stunnel.html>`_.
@@ -174,7 +174,7 @@ FileOwnerNum
    "integer", "system default", "no", "none"
 
 Set the file owner for the domain socket. The
-parameter is a numerical ID, which which is used regardless of
+parameter is a numerical ID, which is used regardless of
 whether the user actually exists. This can be useful if the user
 mapping is not available to rsyslog during startup.
 
@@ -550,7 +550,7 @@ MultiLine
 
    "binary", "off", "no", "none"
 
-Experimental parameter which causes rsyslog to recognise a new message
+Experimental parameter which causes rsyslog to recognize a new message
 only if the line feed is followed by a '<' or if there are no more characters.
 
 
@@ -568,7 +568,7 @@ Experimental parameter. It is similar to "MultiLine", but provides greater
 control of when a log message ends. You can specify a regular expression that
 characterizes the header to expect at the start of the next message. As such,
 it indicates the end of the current message. For example, one can use this
-setting to use a RFC3164 header as frame delimiter::
+setting to use an RFC3164 header as frame delimiter::
 
     framing.delimiter.regex="^<[0-9]{1,3}>(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)"
 
@@ -587,13 +587,23 @@ SocketBacklog
    :widths: auto
    :class: parameter-table
 
-   "integer", "5", "no", "none"
+   "integer", "64", "no", "none"
 
-Specifies the backlog parameter sent to the listen() function.
-It defines the maximum length to which the queue of pending connections may grow.
-See man page of listen(2) for more information.
-The parameter controls both TCP and UNIX sockets backlog parameter.
-Default value is arbitrary set to 5.
+Specifies the backlog parameter passed to the `listen()` system call. This parameter
+defines the maximum length of the queue for pending connections, which includes
+partially established connections (those in the SYN-ACK handshake phase) and fully
+established connections waiting to be accepted by the application.
+
+For more details, refer to the `listen(2)` man page.
+
+By default, the value is set to 64 to accommodate modern workloads. It can
+be adjusted to suit specific requirements, such as:
+
+- **High rates of concurrent connection attempts**: Increasing this value helps handle bursts of incoming connections without dropping them.
+- **Test environments with connection flooding**: Larger values are recommended to prevent SYN queue overflow.
+- **Servers with low traffic**: Lower values may be used to reduce memory usage.
+
+The effective backlog size is influenced by system-wide kernel settings, particularly `net.core.somaxconn` and `net.ipv4.tcp_max_syn_backlog`. The smaller value between this parameter and the kernel limits is used as the actual backlog.
 
 
 Defaulttz

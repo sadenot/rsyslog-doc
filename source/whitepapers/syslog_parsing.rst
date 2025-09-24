@@ -20,7 +20,7 @@ The syslog protocol has not been standardized until relatively
 recently. The first document "smelling" a bit like a standard is
 :rfc:`3164`, which dates back to August
 2001. The problem is that this document is no real standard. It has
-assigned "informational" status by the `IETF <http://www.ietf.org>`_
+assigned "informational" status by the `IETF <https://www.ietf.org/>`_
 which means it provides some hopefully useful information but does not
 demand anything. It is impossible to "comply" to an informational
 document. This, of course, doesn't stop marketing guys from telling they
@@ -31,15 +31,15 @@ fault".
 Then, there is :rfc:`3195`, which
 is a real standard. In it's section 3 it makes (a somewhat questionable)
 reference to (informational) RFC 3164 which may be interpreted in a way
-that RFC3195 standardizes the format layed out in RFC 3164 by virtue of
+that RFC3195 standardizes the format laid out in RFC 3164 by virtue of
 referencing them. So RFC3195 seems to extend its standardization domain
-to the concepts layed out in RFC 3164 (which is why I tend to find that
+to the concepts laid out in RFC 3164 (which is why I tend to find that
 reference questionable). In that sense, RFC3195 standardizes the format
 informationally described in RFC3164, Section 4. But it demands it only
 for the scope of RFC3195, which is syslog over BEEP - and NOT syslog
 over UDP. So one may argue whether or not the RFC3164 format could be
 considered a standard for any non-BEEP (including UDP) syslog, too. In
-the strict view I tend to have, it does not. Refering to the RFC3195
+the strict view I tend to have, it does not. Referring to the RFC3195
 context usually does not help, because there are virtually no RFC3195
 implementations available (at this time, I would consider this RFC a
 failure).
@@ -82,7 +82,7 @@ RFC3164 is an informational document: it provides useful information,
 but does not precisely specify anything.
 
 After all of this bashing, I now have to admit that RFC3164 has some
-format recommendations layed out in section 4. The format described has
+format recommendations laid out in section 4. The format described has
 quite some value in it and implementors recently try to follow it. This
 format is usually meant when someone tells you that a software is
 "RFC3164 compliant" or expects "RFC3164 compliant messages". I also have
@@ -161,7 +161,7 @@ but don't expect me to program a parser that is smarter than me.
 To the best of my knowledge, these vendor's device's syslog format can
 be configured, so it would probably be a good idea to include a
 (sufficiently well-formed) timestamp, the sending hostname and (maybe?)
-a tag to make this message well parseable. I will also once again take
+a tag to make this message well parsable. I will also once again take
 this sample and see if we can apply some guesswork. For example, "[" can
 not be part of a well-formed TIMESTAMP, so logic can conclude there is
 not TIMESTAMP. Also, "[" can not be used inside a valid hostname, so
@@ -237,7 +237,7 @@ look:
 
 ::
 
-    $template, MalfromedMsgFormater,"%timegenerated% %fromhost% %rawmsg:::drop-last-lf%\n"
+    $template, MalformedMsgFormater,"%timegenerated% %fromhost% %rawmsg:::drop-last-lf%\n"
     *.* /var/log/somefile;MalformedMsgFormatter
 
 This will make your log much nicer, but not look perfect. Experiment a

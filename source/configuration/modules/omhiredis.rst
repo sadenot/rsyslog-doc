@@ -594,7 +594,7 @@ Example 7: "Simple" stream mode
 -------------------------------
 
 | By using the **stream mode**, the template-formatted log is inserted in a stream using the :ref:`omhiredis_streamoutfield` parameter as key (or *msg* as default).
-| The output template can be explicitely set with the :ref:`omhiredis_template` option (or the default *RSYSLOG_ForwardFormat* template will be used).
+| The output template can be explicitly set with the :ref:`omhiredis_template` option (or the default *RSYSLOG_ForwardFormat* template will be used).
 
 .. code-block:: none
 
@@ -719,8 +719,8 @@ Example 9: Ensuring streams don't grow indefinitely
 ---------------------------------------------------
 
 | While using Redis streams, index entries are not automatically evicted, even if you acknowledge entries.
-| You have several options to ensure your streams stays under reasonable memoyr usage, while making sure your data is
- not evicted before behing processed.
+| You have several options to ensure your streams stays under reasonable memory usage, while making sure your data is
+ not evicted before being processed.
 | To do that, you have 2 available options, that can be used independently from each other
  (as they don't apply to the same source):
 

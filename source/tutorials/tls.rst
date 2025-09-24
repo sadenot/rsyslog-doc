@@ -1,7 +1,7 @@
 Encrypting Syslog Traffic with TLS (SSL) [short version]
 ========================================================
 
-*Written by* `Rainer Gerhards  <http://www.gerhards.net/rainer>`_
+*Written by* `Rainer Gerhards  <https://rainer.gerhards.net/>`_
 *(2008-05-06)*
 
 Abstract
@@ -11,8 +11,8 @@ Abstract
 `syslog <http://www.monitorware.com/en/topics/syslog/>`_ 
 **messages on the network.**
 Encryption is vital to keep the confidential content of
-syslog messages secure. I describe the overall approach and provide an
-HOWTO do it with `rsyslog's <http://www.rsyslog.com>`_ TLS features. 
+syslog messages secure. I describe the overall approach and provide a
+HOWTO using `rsyslog's <http://www.rsyslog.com>`_ TLS features. 
 
 Please note that TLS is the more secure successor of SSL. While people
 often talk about "SSL encryption" they actually mean "TLS encryption".
@@ -40,18 +40,18 @@ mailing list thread that describes `total loss of syslog messages due to
 stunnel
 mode <http://lists.adiscon.net/pipermail/rsyslog/2008-March/000580.html>`_
 and the `unreliability of TCP
-syslog <http://rgerhards.blogspot.com/2008/04/on-unreliability-of-plain-tcp-syslog.html>`_).
+syslog <https://rainer.gerhards.net/2008/04/on-unreliability-of-plain-tcp-syslog.html>`_).
 
 `Rsyslog supports syslog via GSSAP <gssapi.html>`_\ I since long to
 overcome these limitations. However, syslog via GSSAPI is a
 rsyslog-exclusive transfer mode and it requires a proper Kerberos
 environment. As such, it isn't a really universal solution. The
-`IETF <http://www.ietf.org/>`_ has begun standardizing syslog over plain
+`IETF <https://www.ietf.org/>`_ has begun standardizing syslog over plain
 tcp over TLS for a while now. While I am not fully satisfied with the
 results so far, this obviously has the  potential to become the
 long-term solution. The Internet Draft in question, syslog-transport-tls
 has been dormant for some time but is now (May of 2008) again being
-worked on. I expect it to turn into a RFC within the next 12 month (but
+worked on. I expect it to turn into an RFC within the next 12 month (but
 don't take this for granted ;)). I didn't want to wait for it, because
 there obviously is need for TLS syslog right now (and, honestly, I have
 waited long enough...). Consequently, I have implemented the current
@@ -76,7 +76,7 @@ and receiver are the upper layer. The driver layer currently consists of
 the "ptcp" and "gtls" library plugins. "ptcp" stands for "plain tcp" and
 is used for unencrypted message transfer. It is also used internally by
 the gtls driver, so it must always be present on a system. The "gtls"
-driver is for GnutTLS, a TLS library. It is used for encrypted message
+driver is for GnuTLS, a TLS library. It is used for encrypted message
 transfer. In the future, additional drivers will become available (most
 importantly, we would like to include a driver for NSS).
 

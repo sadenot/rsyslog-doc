@@ -8,7 +8,7 @@ The ``timezone`` object, as its name suggests, describes timezones.
 Currently, they are used by message parser modules to interpret
 timestamps that contain timezone information via a timezone string
 (but not an offset, e.g. "CET" but not "-01:00"). The object describes
-an UTC offset for a given timezone ID.
+a UTC offset for a given timezone ID.
 
 Each timestamp object adds the zone definition to a global table
 with timezone information. Duplicate IDs are forbidden, but the
@@ -60,7 +60,7 @@ The next sample defines some common timezones:
 
   timezone(id="CET" offset="+01:00")
   timezone(id="CEST" offset="+02:00")
-  timezone(id="METDST" offset="+02:00") # duplicate to support differnt formats
+  timezone(id="METDST" offset="+02:00") # duplicate to support different formats
   timezone(id="EST" offset="-05:00")
   timezone(id="EDT" offset="-04:00")
   timezone(id="PST" offset="-08:00")

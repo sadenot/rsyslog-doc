@@ -24,7 +24,7 @@ Malformed Messages and Message Properties
 -----------------------------------------
 
 A common trouble source are `ill-formed syslog
-messages <syslog_parsing.html>`_, which lead to to all sorts of
+messages <syslog_parsing.html>`_, which lead to all sorts of
 interesting problems, including malformed hostnames and dates. Read the
 quoted guide to find relief. A common symptom is that the %HOSTNAME%
 property is used for generating dynafile names, but some gibberish
@@ -318,18 +318,34 @@ In order to aid the debugging process, it is useful to have debug symbols
 on the system. If you build rsyslog yourself, make sure that the ``-g``
 option is included in CFLAGS. If you use packages, the debug symbols come
 in their own package. **It is highly recommended to install that package
-as it provides tremendous extra benefit.** To do so, do:
+as it provides tremendous extra benefit.** 
+
+For RPM-based systems like CentOS or RHEL, you can install the
+debuginfo package by running:
 
 ::
 
   yum install rsyslog-debuginfo 
 
-Obviously, this is for RPM-based systems, but it's essentially the same
-with other packaging systems, just use the native commands. Note that
-the package may be named slightly different, but it should always be
-fairly easy to locate.
+For Debian-based systems like Ubuntu, you will need to edit the apt sources
+list to include the debug symbols repository by appending ``main/debug``.
+For our launchpad PPA, you can add the following line to your launchpad sources list,
+for example in ``/etc/apt/sources.list.d/adiscon-ubuntu-v8-stable-jammy.list``:
 
+::
+
+    deb https://ppa.launchpadcontent.net/adiscon/experimental/ubuntu/ jammy main main/debug
   
+Every package will have its own debug symbols package, for example for rsyslog-openssl
+there is a rsyslog-openssl-dbgsym package. To install the debug symbols for the main
+rsyslog package you can run:
+
+::
+
+  apt-get update
+  apt-get install rsyslog-dbgsym
+
+
 Active support from the user base is very important to help us track
 down those things. Most often, serious problems are the result of some
 memory misaddressing. During development, we routinely use valgrind, a
@@ -356,7 +372,7 @@ better, and thus be able to quicker craft a fix.
 
 In order to get useful information, we need some backtrace of the abort.
 First, you need to make sure that a core file is created. Under Fedora,
-for example, that means you need to have an "ulimit -c unlimited" in
+for example, that means you need to have a "ulimit -c unlimited" in
 place.
 
 Now let's assume you got a core file (e.g. in /core.1234). So what to do

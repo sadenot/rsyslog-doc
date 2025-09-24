@@ -380,7 +380,7 @@ dynaFileCacheSize
    "integer", "10", "no", "``$DynaFileCacheSize``"
 
 This parameter specifies the maximum size of the cache for
-dynamically-generated file names (dynafile= parmeter).
+dynamically-generated file names (dynafile= parameter).
 This setting specifies how many open file handles should
 be cached. If, for example, the file name is generated with the hostname
 in it and you have 100 different hosts, a cache size of 100 would ensure
@@ -626,7 +626,7 @@ fileOwnerNum
 
 Set the file owner for files newly created. Please note that this
 setting does not affect the owner of files already existing. The
-parameter is a numerical ID, which which is used regardless of
+parameter is a numerical ID, which is used regardless of
 whether the user actually exists. This can be useful if the user
 mapping is not available to rsyslog during startup.
 
@@ -788,7 +788,7 @@ cry.Provider
 Selects a crypto provider for log encryption. By selecting a provider,
 the encryption feature is turned on.
 
-Currently, there only is one provider called ":doc:`gcry <../cryprov_gcry>`".
+Currently, there are two providers called ":doc:`gcry <../cryprov_gcry>`" and ":doc:`ossl <../cryprov_ossl>`".
 
 
 rotation.sizeLimit
@@ -810,7 +810,7 @@ to prevent messages from being split across two files. Also, a full batch of
 messages is not terminated in between. As such, in practice, the size of the
 output file can grow some KiB larger than configured.
 
-Also avoid to configer a too-low limit, especially for busy files. Calling the
+Also avoid to configure a too-low limit, especially for busy files. Calling the
 rotation script is relatively performance intense. As such, it could negatively
 affect overall rsyslog performance.
 

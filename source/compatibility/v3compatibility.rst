@@ -1,7 +1,7 @@
 Compatibility Notes for rsyslog v3
 ==================================
 
-*Written by* `Rainer Gerhards <http://www.gerhards.net/rainer>`_
+*Written by* `Rainer Gerhards <https://rainer.gerhards.net/>`_
 *(2008-03-28)*
 
 Rsyslog aims to be a drop-in replacement for sysklogd. However, version
@@ -110,7 +110,7 @@ compatibility mode (if no -c option is given). Use the ``$UDPSeverRun
 the server should listen to via ``$UDPServerAddress <ip>`` config
 directive.
 
-The following example configures an UDP syslog server at the local
+The following example configures a UDP syslog server at the local
 address 192.0.2.1 on port 514:
 
 ::

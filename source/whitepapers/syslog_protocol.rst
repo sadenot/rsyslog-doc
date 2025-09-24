@@ -55,7 +55,7 @@ This lists what has been found during implementation:
    Modifying the code to "cleanly" support NUL characters is
    non-trivial, even though rsyslogd already has some byte-counted
    string library (but this is new and not yet available everywhere).
--  **character encoding in MSG**: is is problematic to do the right
+-  **character encoding in MSG**: it is problematic to do the right
    UTF-8 encoding. The reason is that we pick up the MSG from the local
    domain socket (which got it from the syslog(3) API). The text
    obtained does not include any encoding information, but it does
@@ -170,7 +170,7 @@ This lists what has been found during implementation:
 -  As an architectural side-effect, syslog-protocol formatted messages
    can also be transmitted over non-standard syslog/raw tcp. This
    implementation uses the industry-standard LF termination of tcp
-   syslog records. As such, syslog-protocol messages containing a LF
+   syslog records. As such, syslog-protocol messages containing an LF
    will be broken invalidly. There is nothing that can be done against
    this without specifying a TCP transport. This issue might be more
    important than one thinks on first thought. The reason is the wide
@@ -192,8 +192,8 @@ This lists what has been found during implementation:
 
  
 
-Conlusions/Suggestions
-----------------------
+Conclusions/Suggestions
+-----------------------
 
 These are my personal conclusions and suggestions. Obviously, they must
 be discussed ;)
@@ -205,7 +205,7 @@ be discussed ;)
    be used but UTF-8 is preferred. To detect UTF-8, the MSG should start
    with the UTF-8 byte order mask of "EF BB BF" if it is UTF-8 encoded
    (see section 155.9 of
-   `http://www.unicode.org/versions/Unicode4.0.0/ch15.pdf <http://www.unicode.org/versions/Unicode4.0.0/ch15.pdf>`_)
+   `https://www.unicode.org/versions/Unicode4.0.0/ch15.pdf <https://www.unicode.org/versions/Unicode4.0.0/ch15.pdf>`_)
 -  Requirements to drop messages should be reconsidered. I guess I would
    not be the only implementor ignoring them.
 -  Logging requirements should be reconsidered and probably be removed.

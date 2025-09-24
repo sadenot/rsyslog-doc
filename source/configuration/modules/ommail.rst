@@ -209,7 +209,7 @@ need to load the external process (but that should be no problem given
 the expected infrequent number of calls into this plugin). The big
 advantage of sendmail mode is that it supports all the bells and
 whistles of a full-blown SMTP implementation and may even work for local
-delivery without a SMTP server being present. Sendmail mode will be
+delivery without an SMTP server being present. Sendmail mode will be
 implemented as need arises. So if you need it, please drop us a line (If
 nobody does, sendmail mode will probably never be implemented).
 
@@ -301,6 +301,6 @@ Additional Resources
 A more advanced example plus a discussion on using the email feature
 inside a reliable system can be found in Rainer's blogpost "`Why is
 native email capability an advantage for a
-syslogd? <http://rgerhards.blogspot.com/2008/04/why-is-native-email-capability.html>`_\ "
+syslogd? <https://rainer.gerhards.net/2008/04/why-is-native-email-capability-an-advantage-for-a-syslogd.html>`_\ "
 
 

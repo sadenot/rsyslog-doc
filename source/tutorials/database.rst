@@ -1,7 +1,7 @@
-Writing syslog messages to MySQL, PostgreSQL or any other supported Database
-============================================================================
+Writing syslog messages to MariaDB, MySQL, PostgreSQL or any other supported Database
+=====================================================================================
 
-*Written by* \ `Rainer Gerhards <https://rainer.gerhards.net>`_\ *with
+*Written by* \ `Rainer Gerhards <https://rainer.gerhards.net/>`_\ *with
 some additions by Marc Schiffbauer (2008-02-28)*
 
 Abstract
@@ -10,7 +10,8 @@ Abstract
 ***In this paper, I describe how to
 write***\ `syslog <http://www.monitorware.com/en/topics/syslog/>`_\ ***messages
 to
-a***\ `MySQL <http://www.mysql.com/>`_\ ***or***\ `PostgreSQL <http://www.postgresql.org/>`_\ ***database.***\ *Having
+a***\ `MariaDB <http://www.mariadb.org/>`)_/`MySQL <http://www.mysql.com/>`_ \
+***or***\ `PostgreSQL <http://www.postgresql.org/>`_\ ***database.***\ *Having
 syslog messages in a database is often handy, especially when you intend
 to set up a front-end for viewing them. This paper describes an approach
 with*\ `rsyslogd <http://www.rsyslog.com/>`_\ *, an alternative enhanced
@@ -109,7 +110,7 @@ Replacer <http://www.rsyslog.com/doc-property_replacer.html>`_\ ".
 Simply said, you access properties by including their name between
 percent signs inside the template. For example, if the syslog message is
 "Test", the template "%msg%" would be expanded to "Test". Rsyslogd
-supports sending template text as a SQL statement to the database. As
+supports sending template text as an SQL statement to the database. As
 such, the template must be a valid SQL statement. There is no limit in
 what the statement might be, but there are some obvious and not so
 obvious choices. For example, a template "drop table xxx" is possible,

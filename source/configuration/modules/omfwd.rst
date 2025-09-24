@@ -11,9 +11,13 @@ omfwd: syslog Forwarding Output Module
 Purpose
 =======
 
-The omfwd plug-in provides the core functionality of traditional message
-forwarding via UDP and plain TCP. It is a built-in module that does not
-need to be loaded.
+The `omfwd` plugin provides core functionality for traditional message forwarding 
+via UDP and TCP (including TLS). This built-in module does neither require loading
+nor can be loaded. If you need to "load" in order to set defaults, use "builtin:omfwd"
+as the module name.
+
+.. note:: The RELP protocol is not supported by `omfwd`. Use :doc:`omrelp <omrelp>` 
+   to forward messages via RELP.
 
  
 Notable Features
@@ -30,6 +34,7 @@ Configuration Parameters
 Module Parameters
 -----------------
 
+
 Template
 ^^^^^^^^
 
@@ -38,10 +43,52 @@ Template
    :widths: auto
    :class: parameter-table
 
-   "word", "RSYSLOG_TraditionalForwardFormat", "no", "``$ActionForwardDefaultTemplateName``"
+   "word", "RSYSLOG_TraditionalForwardFormat", "no", "``$ActionForwardDefaultTemplate``"
 
-Sets a non-standard default template for this module.
- 
+Sets a custom default template for this module.
+
+iobuffer.maxSize
+^^^^^^^^^^^^^^^^
+
+.. csv-table::
+   :header: "type", "default", "mandatory", "|FmtObsoleteName| directive"
+   :widths: auto
+   :class: parameter-table
+
+   "integer", "full size", "no", "none"
+
+The iobuffer.maxSize parameter sets the maximum size of the I/O buffer
+used by rsyslog when submitting messages to the TCP send API. This
+parameter allows limiting the buffer size to a specific value and is
+primarily intended for testing purposes, such as within an automated
+testbench. By default, the full size of the I/O buffer is used, which
+depends on the rsyslog version. If the specified size is too large, an
+error is emitted, and rsyslog reverts to using the full size.
+
+.. note::
+    The I/O buffer has a fixed upper size limit for performance reasons. This limitation
+    allows saving one ``malloc()`` call and indirect addressing. Therefore, the ``iobuffer.maxSize``
+    parameter cannot be set to a value higher than this fixed limit.
+
+.. note::
+    This parameter should usually not be used in production environments.
+
+Example
+.......
+
+.. code-block:: none
+
+  module(load="builtin:omfwd" iobuffer.maxSize="8")
+
+In this example, a very small buffer size is used. This setting helps
+force rsyslog to execute code paths that are rarely used in normal
+operations. It allows testing edge cases that typically cannot be
+tested automatically.
+
+**Note that contrary to most other modules, omfwd is a built-in module. As such,
+you cannot "normally" load it just by name but need to prefix it with
+"builtin:" as can be seen above!**
+
 
 Action Parameters
 -----------------
@@ -54,11 +101,24 @@ Target
    :widths: auto
    :class: parameter-table
 
-   "word", "none", "no", "none"
+   "array/word", "none", "no", "none"
 
-Name or IP-Address of the system that shall receive messages. Any
-resolvable name is fine.
+Name or IP address of the system to receive messages. Any resolvable name is fine.
+Here either a single target or an array of targets can be provided.
 
+If an array is provided, rsyslog forms a "target pool". Inside the pool, it
+performs equal load-balancing among them. Targets are changed for
+each message being sent. If targets become unreachable, they will temporarily not
+participate in load balancing. If all targets become offline (then and only then)
+the action itself is suspended. Unreachable targets are automatically retried
+by omfwd.
+
+NOTE: target pools are ONLY available for TCP transport. If UDP is selected, an
+error message is emitted and only the first target used.
+
+Single target: Target="syslog.example.net"
+
+Array of targets: Target=["syslog1.example.net", "syslog2.example.net", "syslog3.example.net"]
 
 Port
 ^^^^
@@ -68,10 +128,40 @@ Port
    :widths: auto
    :class: parameter-table
 
-   "word", "514", "no", "none"
+   "array/word", "514", "no", "none"
 
-Name or numerical value of port to use when connecting to target.
+Name or numerical value of the port to use when connecting to the target.
+If multiple targets are defined, different ports can be defined for each target.
+To do so, use array mode. The first port will be used for the first target, the
+second for the second target and so on. If fewer ports than targets are defined,
+the remaining targets will use the first port configured. This also means that you
+also need to define a single port, if all targets should use the same port.
 
+Note: if more ports than targets are defined, the remaining ports are ignored and
+an error message is emitted.
+
+
+pool.resumeinterval
+^^^^^^^^^^^^^^^^^^^
+
+.. csv-table::
+   :header: "type", "default", "mandatory", "|FmtObsoleteName| directive"
+   :widths: auto
+   :class: parameter-table
+
+   "integer", "30 seconds", "no", "none"
+
+If a target pool exists, "pool.resumeinterval" configures how often an unavailable
+target is tried to be activated. A new connection request will be made in roughly
+"pool.resumeinterval" seconds until connection is reestablished or the action become
+completely suspenden (in which case the action settings take control).
+
+Please note the word "roughly": the interval may be some seconds earlier or later
+on a try-by-try basis because of other ongoing activity inside rsyslog.
+
+Warning: we do NOT recommend to set this interval below 10 seconds, as it can lead
+DoS-like reconnection behaviour. Actually, the default of 30 seconds is quite short
+and should be extended if the use case permits.
 
 Protocol
 ^^^^^^^^
@@ -83,10 +173,11 @@ Protocol
 
    "word", "udp", "no", "none"
 
-Type of protocol to use for forwarding. Note that \`\`tcp'' means
-both legacy plain tcp syslog as well as RFC5425-based TLS-encrypted
-syslog. Which one is selected depends on the StreamDriver parameter.
-If StreamDriver is set to "ossl", "gtls" or "mbedtls", it will use TLS-encrypted syslog.
+Type of protocol to use for forwarding. Note that ``tcp`` includes both legacy 
+plain TCP syslog and 
+`RFC5425 <https://datatracker.ietf.org/doc/html/rfc5425>`_-based TLS-encrypted 
+syslog. The selection depends on the StreamDriver parameter. If StreamDriver is 
+set to "ossl", "gtls" or "mbedtls", it will use TLS-encrypted syslog.
 
 
 NetworkNamespace
@@ -99,11 +190,11 @@ NetworkNamespace
 
    "word", "none", "no", "none"
 
-Name of a network namespace as in /var/run/netns/ to use for forwarding.
+Name of a network namespace in /var/run/netns/ to use for forwarding.
 
-If the setns() system call is not available on the system (e.g. BSD
-kernel, linux kernel before v2.6.24) the given namespace will be
-ignored.
+If the setns() system call is unavailable (e.g., BSD kernel, Linux kernel 
+before v2.6.24), the given namespace will be ignored.
+
 
 Address
 ^^^^^^^
@@ -117,8 +208,9 @@ Address
 
 .. versionadded:: 8.35.0
 
-Bind socket to a given local IP address. This option is only supported
-for UDP, not TCP.
+Bind socket to a specific local IP address. This option is supported for 
+UDP only, not TCP.
+
 
 IpFreeBind
 ^^^^^^^^^^
@@ -174,24 +266,25 @@ TCP_Framing
 
    "word", "traditional", "no", "none"
 
-Framing-Mode to be used for forwarding, either "traditional" or
-"octet-counted". This affects only TCP-based protocols, it is ignored for UDP.
-In protocol engineering, "framing" means how multiple messages over the same
-connection are separated. Usually, this is transparent to users. Unfortunately,
-the early syslog protocol evolved and so there are cases where users need to
-specify the framing. The "traditional" framing is nontransparent. With it,
-messages end when an LF (aka "line break", "return") is encountered, and the
-next message starts immediately after the LF. If multi-line messages are
-received, these are essentially broken up into multiple message, usually with
-all but the first message segment being incorrectly formatted. The
-"octet-counted" framing solves this issue. With it, each message is prefixed
-with the actual message length, so that a receiver knows exactly where the
-message ends. Multi-line messages cause no problem here. This mode is very
-close to the method described in RFC5425 for TLS-enabled syslog. Unfortunately,
-only few syslogd implementations support "octet-counted" framing. As such, the
-"traditional" framing is set as default, even though it has defects. If it is
-known that the receiver supports "octet-counted" framing, it is suggested to
-use that framing mode.
+Framing mode used for forwarding: either "traditional" or "octet-counted". This 
+applies only to TCP-based protocols and is ignored for UDP. In protocol 
+engineering, "framing" refers to how multiple messages over the same connection 
+are separated. Usually, this is transparent to users. However, the early syslog 
+protocol evolved in such a way that users sometimes need to specify the framing.
+
+"Traditional" framing is non-transparent, where messages end when an LF 
+(line feed) is encountered, and the next message starts immediately after the 
+LF. If multi-line messages are received, they are split into multiple messages, 
+with all but the first segment usually incorrectly formatted.
+
+"Octet-counted" framing addresses this issue. Each message is prefixed with its 
+length, so the receiver knows exactly where the message ends. Multi-line 
+messages are handled correctly. This mode is similar to the method described in 
+`RFC5425 <https://datatracker.ietf.org/doc/html/rfc5425>`_ for TLS-enabled 
+syslog. Unfortunately, few syslog implementations support "octet-counted" 
+framing. As such, "traditional" framing is the default, despite its defects. 
+If the receiver supports "octet-counted" framing, it is recommended to use 
+that mode.
 
 
 TCP_FrameDelimiter
@@ -442,8 +535,14 @@ StreamDriver
 
    "word", "none", "no", "``$ActionSendStreamDriver``"
 
+The recommended alias, compatible with imtcp, is "StreamDriver.Name".
+
 Choose the stream driver to be used. Default is plain tcp, but
 you can also choose "ossl" "gtls" or "mbedtls" for TLS encryption.
+
+Note: aliases help, but are not a great solution. They may
+cause confusion if both names are used together in a single
+config. So care must be taken when using an alias.
 
 
 StreamDriverMode
@@ -456,7 +555,13 @@ StreamDriverMode
 
    "integer", "0", "no", "``$ActionSendStreamDriverMode``"
 
+The recommended alias, compatible with imtcp, is "StreamDriver.Mode".
+
 Mode to use with the stream driver (driver-specific)
+
+Note: aliases help, but are not a great solution. They may
+cause confusion if both names are used together in a single
+config. So care must be taken when using an alias.
 
 
 StreamDriverAuthMode
@@ -469,9 +574,15 @@ StreamDriverAuthMode
 
    "string", "none", "no", "``$ActionSendStreamDriverAuthMode``"
 
+The recommended alias, compatible with imtcp, is "StreamDriver.AuthMode".
+
 Authentication mode to use with the stream driver. Note that this
 parameter requires TLS netstream drivers. For all others, it will be
 ignored. (driver-specific).
+
+Note: aliases help, but are not a great solution. They may
+cause confusion if both names are used together in a single
+config. So care must be taken when using an alias.
 
 
 StreamDriver.PermitExpiredCerts
@@ -551,7 +662,7 @@ Specifies the allowed maximum depth for the certificate chain verification.
 Support added in v8.2001.0, supported by GTLS and OpenSSL driver.
 If not set, the API default will be used.
 For OpenSSL, the default is 100 - see the doc for more:
-https://www.openssl.org/docs/man1.1.1/man3/SSL_set_verify_depth.html
+https://docs.openssl.org/1.1.1/man3/SSL_CTX_set_verify/
 For GnuTLS, the default is 5 - see the doc for more:
 https://www.gnutls.org/manual/gnutls.html
 
@@ -721,7 +832,7 @@ information about priority Strings
 For OpenSSL, the setting can be used to pass configuration commands to openssl library.
 OpenSSL Version 1.0.2 or higher is required for this feature.
 A list of possible commands and their valid values can be found in the documentation:
-https://www.openssl.org/docs/man1.0.2/man3/SSL_CONF_cmd.html
+https://docs.openssl.org/1.0.2/man3/SSL_CONF_cmd/
 
 The setting can be single or multiline, each configuration command is separated by linefeed (\n).
 Command and value are separated by equal sign (=). Here are a few samples:
@@ -746,6 +857,32 @@ It will also set the minimum protocol to TLSv1.2
 
    gnutlsPriorityString="Protocol=ALL,-SSLv2,-SSLv3,-TLSv1
    MinProtocol=TLSv1.2"
+
+
+
+extendedConnectionCheck
+^^^^^^^^^^^^^^^^^^^^^^^
+
+.. csv-table::
+   :header: "type", "default", "mandatory", "|FmtObsoleteName| directive"
+   :widths: auto
+   :class: parameter-table
+
+   "boolean", "true", "no", "none"
+
+This setting permits to control if rsyslog should try to detect if the remote
+syslog server has broken the current TCP connection. It is has no meaning when
+UDP protocol is used.
+
+Generally, broken connections are not easily detectable. That setting does additional
+API calls to check for them. This causes some extra overhead, but is traditionally
+enabled.
+
+Especially in very busy systems it is probably worth to disable it. The extra overhead
+is unlikely to bring real benefits in such scenarios.
+
+Note: If you need reliable delivery, do NOT use plain TCP syslog transport.
+Use RELP instead.
 
 
 Statistic Counter

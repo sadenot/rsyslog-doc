@@ -19,7 +19,7 @@ obtained. Note that anonymization will break digital signatures on the
 message, if they exist.
 
 Please note that log files can also be anonymized via
-`SLFA <http://jan.gerhards.net/p/slfa.html>`_ after they
+`SLFA <https://jan.gerhards.net/2017/10/12/slfa-release/>`_ after they
 have been created.
 
 *How are IP-Addresses defined?*
@@ -27,7 +27,7 @@ have been created.
 We assume that an IPv4 address consists of four octets in dotted notation,
 where each of the octets has a value between 0 and 255, inclusively.
 
-An IPv6 is defined by being bewtween zero and eight hex values between 0
+An IPv6 is defined by being between zero and eight hex values between 0
 and ffff. These are separated by ':'. Leading zeros in blocks can be omitted
 and blocks full of zeros can be abbreviated by using '::'. However, this
 can ony happen once in an IP address.
@@ -111,7 +111,7 @@ the right, so lower bits are anonymized first). This setting permits
 to save network information while still anonymizing user-specific
 data. The more bits you discard, the better the anonymization
 obviously is. The default of 16 bits reflects what German data
-privacy rules consider as being sufficinetly anonymized. We assume,
+privacy rules consider as being sufficiently anonymized. We assume,
 this can also be used as a rough but conservative guideline for other
 countries.
 Note: when in simple mode, only bits on a byte boundary can be
@@ -173,7 +173,7 @@ The default "zero" mode will do full anonymization of any number
 of bits and it will also normalize the address, so that no information
 about the original IP address is available.
 
-Also note that an anonymmized IPv6 address will be normalized, meaning
+Also note that an anonymized IPv6 address will be normalized, meaning
 there will be no abbreviations, leading zeros will **not** be displayed,
 and capital letters in the hex numerals will be lowercase.
 
@@ -193,7 +193,7 @@ the right, so lower bits are anonymized first). This setting permits
 to save network information while still anonymizing user-specific
 data. The more bits you discard, the better the anonymization
 obviously is. The default of 96 bits reflects what German data
-privacy rules consider as being sufficinetly anonymized. We assume,
+privacy rules consider as being sufficiently anonymized. We assume,
 this can also be used as a rough but conservative guideline for other
 countries.
 
@@ -234,7 +234,7 @@ The default "zero" mode will do full anonymization of any number
 of bits and it will also normalize the address, so that no information
 about the original IP address is available.
 
-Also note that an anonymmized IPv6 address will be normalized, meaning
+Also note that an anonymized IPv6 address will be normalized, meaning
 there will be no abbreviations, leading zeros will **not** be displayed,
 and capital letters in the hex numerals will be lowercase.
 
@@ -254,7 +254,7 @@ the right, so lower bits are anonymized first). This setting permits
 to save network information while still anonymizing user-specific
 data. The more bits you discard, the better the anonymization
 obviously is. The default of 96 bits reflects what German data
-privacy rules consider as being sufficinetly anonymized. We assume,
+privacy rules consider as being sufficiently anonymized. We assume,
 this can also be used as a rough but conservative guideline for other
 countries.
 
@@ -280,7 +280,7 @@ Anonymizing messages
 
 In this snippet, we write one file without anonymization and another one
 with the message anonymized. Note that once mmanon has run, access to
-the original message is no longer possible (execept if stored in user
+the original message is no longer possible (except if stored in user
 variables before anonymization).
 
 .. code-block:: none
@@ -358,7 +358,7 @@ Anonymizing only ipv6 addresses
 -------------------------------
 
 Another option is to only anonymize IPv6 addresses. When doing this you have to
-disable IPv4 aonymization. This example will lead to only IPv6 addresses anonymized
+disable IPv4 anonymization. This example will lead to only IPv6 addresses anonymized
 (using the random-consistent mode).
 
 .. code-block:: none

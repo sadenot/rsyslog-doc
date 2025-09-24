@@ -106,7 +106,7 @@ Parameters
 
    Defines the name of lookup table for further reference inside the
    configuration. Names must be unique. Note that it is possible, though
-   not advisible, to have different names for the same file.
+   not advisable, to have different names for the same file.
 -  **file** (mandatory)
 
    Specifies the full path for the lookup table file. This file must be
@@ -164,7 +164,7 @@ load\_lookup\_table Statement
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 **Note: in the final implementation, this MAY be implemented as an
-action. This is a low-level decesion that must be made during the detail
+action. This is a low-level decision that must be made during the detail
 development process. Parameters and semantics will remain the same of
 this happens.**
 

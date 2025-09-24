@@ -83,7 +83,7 @@ startup.
 **Note well:** When rsyslog is restarted during normal system operations,
 existing imkmsg messages are re-read and this is done with the kernel
 timestamp. This causes message duplication, but is what imkmsg always
-did. It is planned to provide ehance the module to improve this
+did. It is planned to provide enhance the module to improve this
 behaviour. This documentation page here will be updated when changes are
 made.
 
@@ -169,7 +169,7 @@ This is Linux specific module and requires /dev/kmsg device with
 structured kernel logs.
 
 This module does not support rulesets. All messages are delivered to the
-default rulseset.
+default ruleset.
 
 
 

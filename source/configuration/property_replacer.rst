@@ -197,7 +197,7 @@ options are defined:
 
 **csv**
   formats the resulting field (after all modifications) in CSV format as
-  specified in `RFC 4180 <http://www.ietf.org/rfc/rfc4180.txt>`_. Rsyslog
+  specified in `RFC 4180 <https://datatracker.ietf.org/doc/html/rfc4180>`_. Rsyslog
   will always use double quotes. Note that in order to have full
   CSV-formatted text, you need to define a proper template. An example is
   this one:
@@ -214,7 +214,7 @@ options are defined:
   convert data to UTC prior to outputting it (available since 8.18.0)
 
 **date-mysql**
-  format as mysql date
+  format as MariaDB/MySQL date
 
 **date-rfc3164**
   format as RFC 3164 date

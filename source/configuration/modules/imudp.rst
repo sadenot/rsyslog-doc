@@ -161,7 +161,7 @@ PreserveCase
 
 .. versionadded:: 8.37.0
 
-This parameter is for controlling the case in fromhost.  If preservecase is set to "on", the case in fromhost is preserved.  E.g., 'Host1.Example.Org' when the message was received from 'Host1.Example.Org'.  Default to "off" for the backword compatibility.
+This parameter is for controlling the case in fromhost.  If preservecase is set to "on", the case in fromhost is preserved.  E.g., 'Host1.Example.Org' when the message was received from 'Host1.Example.Org'.  Default to "off" for the backward compatibility.
 
 
 .. index:: imudp; input parameters
@@ -397,12 +397,12 @@ Statistic Counter
 
 This plugin maintains :doc:`statistics <../rsyslog_statistic_counter>` for each listener and for each worker thread.
 
-The listener statistic is named starting with "imudp", followed followed by the
+The listener statistic is named starting with "imudp", followed by the
 listener IP, a colon and port in parenthesis. For example, the counter for a
 listener on port 514 (on all IPs) with no set name is called "imudp(\*:514)".
 
 If an "inputname" is defined for a listener, that inputname is used instead of
-"imudp" as statistic name. For example, if the inputname is set to "myudpinut",
+"imudp" as statistic name. For example, if the inputname is set to "myudpinput",
 that corresponding statistic name in above case would be "myudpinput(\*:514)".
 This has been introduced in 7.5.3.
 
@@ -411,7 +411,7 @@ The following properties are maintained for each listener:
 -  **submitted** - total number of messages submitted for processing since startup
 
 The worker thread (in short: worker) statistic is named "imudp(wX)" where "X" is
-the worker thread ID, which is an monotonically increasing integer starting at 0.
+the worker thread ID, which is a monotonically increasing integer starting at 0.
 This means the first worker will have the name "imudp(w0)", the second "imudp(w1)"
 and so on. Note that workers are all equal. It doesn’t really matter which worker
 processes which messages, so the actual worker ID is not of much concern. More
@@ -424,7 +424,7 @@ Note: worker thread statistics are available starting with rsyslog 7.5.5.
 -  **disallowed** - total number of messages discarded due to disallowed sender
 
 This counts the number of messages that have been discarded because they have
-been received by an disallowed sender. Note that if no allowed senders are
+been received by a disallowed sender. Note that if no allowed senders are
 configured (the default), this counter will always be zero.
 
 This counter was introduced by rsyslog 8.35.0.
@@ -453,7 +453,7 @@ Examples
 Example 1
 ---------
 
-This sets up an UDP server on port 514:
+This sets up a UDP server on port 514:
 
 .. code-block:: none
 
@@ -576,7 +576,7 @@ imudp threads and queue worker threads
 --------------------------------------
 There is no direct relationship between these two entities. Imudp submits
 messages to the configured rulesets and places them into the respective
-queues. It is then up the the queue config, and outside of the scope
+queues. It is then up to the queue config, and outside of the scope
 or knowledge of imudp, how many queue worker threads will be spawned by
 the queue in question.
 

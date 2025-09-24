@@ -390,7 +390,7 @@ The setting can be used if tls.tlslib is set to "openssl" to pass configuration 
 the openssl libray.
 OpenSSL Version 1.0.2 or higher is required for this feature.
 A list of possible commands and their valid values can be found in the documentation:
-https://www.openssl.org/docs/man1.0.2/man3/SSL_CONF_cmd.html
+https://docs.openssl.org/1.0.2/man3/SSL_CONF_cmd/
 
 The setting can be single or multiline, each configuration command is separated by linefeed (\n).
 Command and value are separated by equal sign (=). Here are a few samples:
@@ -437,7 +437,7 @@ Sending msgs with omrelp
 ------------------------
 
 The following sample sends all messages to the central server
-"centralserv" at port 2514 (note that that server must run imrelp on
+"centralserv" at port 2514 (note that the server must run imrelp on
 port 2514).
 
 .. code-block:: none

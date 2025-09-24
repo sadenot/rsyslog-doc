@@ -50,7 +50,7 @@ The following parameters can be set:
 - **defaultNetstreamDriverCRLFile**
 
   For `TLS syslog <http://www.rsyslog.com/doc/rsyslog_secure_tls.html>`_,
-  the CRL File contains a List contains a list of revoked certrificates.
+  the CRL File contains a List contains a list of revoked certificates.
 
 - **defaultNetstreamDriverKeyFile**
 
@@ -69,12 +69,42 @@ The following parameters can be set:
   small parameters to prevent that from happening.
   **This parameter only has an effect if general debugging is enabled.**
 
--  **netstreamDriverCaExtraFiles**
+- **netstreamDriverCaExtraFiles**
 
-   This directive allows to configure multiple additional extra CA files.
-   This is intended for SSL certificate chains to work appropriately,
-   as the different CA files in the chain need to be specified.
-   It must be remarked that this parameter only works with the OpenSSL driver.
+  This directive allows to configure multiple additional extra CA files.
+  This is intended for SSL certificate chains to work appropriately,
+  as the different CA files in the chain need to be specified.
+  It must be remarked that this parameter only works with the OpenSSL driver.
+
+- **defaultopensslengine** available 8.2406.0+
+
+  This parameter is used to specify a custom OpenSSL engine by its ID. If the
+  engine is not specified, the system will use the default engine provided by OpenSSL.
+
+  Note: Listing Available OpenSSL Engines
+  To determine the available OpenSSL engines on your system, use the following command:
+
+  .. code-block:: bash
+
+      openssl engine -t
+
+  This command will output a list of available engines along with their IDs and descriptions.
+  Use the engine ID from this list as the value for the defaultopensslengine parameter.
+
+  .. code-block:: text
+
+      (rdrand) Intel RDRAND engine
+      (dynamic) Dynamic engine loading support
+
+  Example configuration:
+
+  .. code-block:: text
+
+      global(
+        ...
+        defaultopensslengine="rdrand"
+        ...
+      )
 
 - **processInternalMessages** binary (on/off)
 
@@ -515,14 +545,14 @@ The following parameters can be set:
   configuration file is not clean. "Not Clean" means there are errors or
   some other annoyances that rsyslogd reports on startup. This is a
   user-requested feature to have a strict startup mode. Note that with the
-  current code base it is not always possible to differentiate between an
+  current code base it is not always possible to differentiate between a
   real error and a warning-like condition. As such, the startup will also
   prevented if warnings are present. I consider this a good thing in being
   "strict", but I admit there also currently is no other way of doing it.
 
 - **abortOnFailedQueueStartup** [boolean (on/off)] available 8.2210.0+
 
-  This parameter is similiar to *abortOnUncleanConfig* but makes rsyslog
+  This parameter is similar to *abortOnUncleanConfig* but makes rsyslog
   abort when there are any problems with queue startup. This is usually
   caused by disk queue settings or disk queue file corruption. Normally,
   rsyslog ignores disk queue definitions in this case and switches the
@@ -580,12 +610,12 @@ The following parameters can be set:
 
 - **security.abortOnIDResolutionFail** [boolean (on/off)], default "on", available 8.2002.0+
 
-  This setting controls if rsyslog should error-terminate when an security ID cannot
+  This setting controls if rsyslog should error-terminate when a security ID cannot
   be resolved during config file processing at startup. If set to "on" and
   a name ID lookup fails (for user and group names) rsyslog does not start but
   terminate with an error message. This is necessary as a security
   measure, as otherwise the wrong permissions can be assigned or privileges
-  are not dropped. This setting is applied whereever security IDs are resolved,
+  are not dropped. This setting is applied wherever security IDs are resolved,
   e.g. when dropping privileges or assigning file permissions or owners.
 
   The setting should be at the top of the configuration parameters to make sure its
@@ -669,11 +699,11 @@ The following parameters can be set:
   re-enqueue messages stems back to some failed operations. Note that the maximum
   permitted queue size is doubled, as this ensures in all cases that re-enqueuing
   can be completed. Note also that the increase of the max size is temporary during
-  shutdown and also does not requiere any more storage. Except, of course, for
+  shutdown and also does not require any more storage. Except, of course, for
   re-enqueued message.
 
   The situation addressed by this setting is unlikely to happen, but it could happen.
-  To enable the funtionality, set it to "on".
+  To enable the functionality, set it to "on".
 
 - **parser.supportCompressionExtension** [boolean (on/off)] available 8.2106.0+
 
